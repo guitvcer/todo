@@ -1,0 +1,6 @@
+codyhouse-framework-master/
+db.sqlite3
+migrations/
+.idea/
+venv/
+*.pyc

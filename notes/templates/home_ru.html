@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>document.getElementsByTagName("html")[0].className += " js";</script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{% static 'css/codyhouse.css' %}">
+  <link rel="stylesheet" href="{% static 'css/crutch.css' %}" id="crutch_link">
+  <noscript>
+    <link rel="stylesheet" href="{% static 'css/codyhouse-fallback.css' %}">
+  </noscript>
+  <title>Ваши записи</title>
+</head>
+<body>
+  <header class="f-header position-sticky js-f-header bottom-0">
+    <div class="f-header__mobile-content container max-width-lg">
+      <a href="#0" class="f-header__logo" title="Настройки" data-toggle="tooltip" data-placement="bottom" id="profile_mobile">
+        <div id="header_username_mobile"></div>
+      </a>
+      <button class="reset anim-menu-btn js-anim-menu-btn f-header__nav-control js-tab-focus" aria-label="Меню">
+        <i class="anim-menu-btn__icon anim-menu-btn__icon--close" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="f-header__nav" role="navigation">
+      <div class="f-header__nav-grid justify-between@md container max-width-lg">
+        <div class="f-header__nav-logo-wrapper" data-toggle="tooltip" data-placement="bottom" title="Настройки">
+          <a href="#0" class="f-header__logo" id="profile_desktop"><div id="header_username"></div></a>
+        </div>
+        <ul class="f-header__list">
+          <li class="f-header__item d-none" id="header_labels">
+            <a href="#0" class="f-header__link" id="labels_dropdown">
+              <span>Ярлыки</span>
+              <svg class="f-header__dropdown-icon icon" aria-hidden="true" viewBox="0 0 12 12"><path d="M6,9l4-5H2Z"/></svg>
+            </a>
+            <ul class="f-header__dropdown" id="label_list"></ul>
+          </li>
+          <li class="f-header__item d-none" id="notes"><a href="#0" class="f-header__link">Записи</a></li>
+          <li class="f-header__item" id="trash"><a href="#0" class="f-header__link">Корзина</a></li>
+          <li class="f-header__item">
+            <form id="search_form">
+              <div class="search-input search-input--icon-right" data-toggle="tooltip" data-placement="bottom" title="Поиск">
+                <input class="form-control f-header__form-control" type="search" name="search_input" id="search_input" placeholder="Поиск...">
+                <button type="submit" class="search-input__btn" id="search_form_submit">
+                  <svg class="icon" viewBox="0 0 24 24"><g stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" stroke="currentColor" fill="none" stroke-miterlimit="10"><line x1="22" y1="22" x2="15.656" y2="15.656"></line><circle cx="10" cy="10" r="8"></circle></g></svg>
+                </button>
+              </div>
+            </form>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </header>
+  <div id="home_page" class="container pt-2">
+    <!-- Menu bar -->
+    <div class="row justify-content-end">
+      <menu class="menu-bar menu-bar--expanded@md js-menu-bar align-items-end">
+        <li class="menu-bar__item d-none" role="menuitem" id="recovery_button">
+          <svg id="recovery_button_svg" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+          width="24" height="24" viewBox="0 0 172 172"
+          style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g fill="#333333"><path d="M43,14.33333c-7.90483,0 -14.33333,6.4285 -14.33333,14.33333v114.66667c0,7.90483 6.4285,14.33333 14.33333,14.33333h36.39323c-2.57283,-4.43617 -4.53941,-9.245 -5.85091,-14.33333h-30.54232v-114.66667h50.16667v35.83333h35.83333v7.16667c4.95933,0 9.74667,0.69315 14.33333,1.87565v-16.20899l-43,-43zM129,86c-23.66165,0 -43,19.33835 -43,43c0,10.01227 3.48973,19.23833 9.26628,26.56706l-9.26628,9.26628h28.66667v-28.66667l-9.19629,9.19629c-0.11657,-0.16714 -0.25088,-0.32018 -0.36393,-0.48991c-3.01813,-4.53135 -4.77311,-9.97796 -4.77311,-15.87305c0,-1.98909 0.19407,-3.92328 0.57389,-5.79492c2.65875,-13.10145 14.16917,-22.87174 28.09277,-22.87174c15.91269,0 28.66667,12.75398 28.66667,28.66667c0,15.91269 -12.75398,28.66667 -28.66667,28.66667v14.33333c23.66165,0 43,-19.33835 43,-43c0,-23.66165 -19.33835,-43 -43,-43z"></path></g></g></svg>
+          <span class="menu-bar__label">Восстановить</span>
+        </li>
+        <li class="menu-bar__item d-none" role="menuitem" id="delete_button">
+          <svg id="delete_button_svg" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+          width="24" height="24"
+          viewBox="0 0 172 172"
+          style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g fill="#333333"><path d="M71.66667,14.33333l-7.16667,7.16667h-28.66667h-7.16667v14.33333h7.16667v107.5c0,7.83362 6.49972,14.33333 14.33333,14.33333h71.66667c7.83362,0 14.33333,-6.49972 14.33333,-14.33333v-107.5h7.16667v-14.33333h-7.16667h-7.16667h-21.5l-7.16667,-7.16667zM50.16667,35.83333h71.66667v107.5h-71.66667z"></path></g></g></svg>
+          <span class="menu-bar__label">Удалить</span>
+        </li>
+        <li class="menu-bar__item" role="menuitem" id="refresh_button">
+          <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+          width="24" height="24"
+          viewBox="0 0 172 172"
+          style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g fill="#333333"><path d="M86,21.5c-19.61127,0 -37.15804,8.82697 -48.97689,22.68978l-15.52311,-15.52311v43h43l-17.25879,-17.25879c9.1948,-11.28751 23.09893,-18.57454 38.75879,-18.57454c27.65617,0 50.16667,22.50333 50.16667,50.16667h14.33333c0,-35.561 -28.93183,-64.5 -64.5,-64.5zM21.5,86c0,35.56817 28.93183,64.5 64.5,64.5c19.61127,0 37.15804,-8.82697 48.97689,-22.68978l15.52311,15.52311v-43h-43l17.25879,17.25879c-9.1948,11.28751 -23.09893,18.57455 -38.75879,18.57455c-27.65617,0 -50.16667,-22.5105 -50.16667,-50.16667z"></path></g></g></svg>
+          <span class="menu-bar__label">Обновить</span>
+        </li>
+        <li class="menu-bar__item" role="menuitem" id="create" aria-controls="new_note_modal">
+          <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+          width="24" height="24"
+          viewBox="0 0 172 172"
+          style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g fill="#333333"><path d="M78.83333,21.5v57.33333h-57.33333v14.33333h57.33333v57.33333h14.33333v-57.33333h57.33333v-14.33333h-57.33333v-57.33333z"></path></g></g></svg>
+          <span class="menu-bar__label">Создать</span>
+        </li>
+        <li class="menu-bar__item d-none d-md-flex" role="menuitem" id="list">
+          <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+          width="24" height="24"
+          viewBox="0 0 172 172"
+          style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g fill="#333333"><path d="M21.5,32.25c-5.93706,0 -10.75,4.81294 -10.75,10.75c0,5.93706 4.81294,10.75 10.75,10.75c5.93706,0 10.75,-4.81294 10.75,-10.75c0,-5.93706 -4.81294,-10.75 -10.75,-10.75zM50.16667,35.83333v14.33333h107.5v-14.33333zM21.5,75.25c-5.93706,0 -10.75,4.81294 -10.75,10.75c0,5.93706 4.81294,10.75 10.75,10.75c5.93706,0 10.75,-4.81294 10.75,-10.75c0,-5.93706 -4.81294,-10.75 -10.75,-10.75zM50.16667,78.83333v14.33333h107.5v-14.33333zM21.5,118.25c-5.93706,0 -10.75,4.81294 -10.75,10.75c0,5.93706 4.81294,10.75 10.75,10.75c5.93706,0 10.75,-4.81294 10.75,-10.75c0,-5.93706 -4.81294,-10.75 -10.75,-10.75zM50.16667,121.83333v14.33333h107.5v-14.33333z"></path></g></g></svg>
+          <span class="menu-bar__label">Список</span>
+        </li>
+        <li class="menu-bar__item d-none" role="menuitem" id="grid">
+          <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+          width="24" height="24"
+          viewBox="0 0 172 172"
+          style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g fill="#333333"><path d="M35.83333,21.5c-7.83362,0 -14.33333,6.49972 -14.33333,14.33333v28.66667c0,7.83362 6.49972,14.33333 14.33333,14.33333h28.66667c7.83362,0 14.33333,-6.49972 14.33333,-14.33333v-28.66667c0,-7.83362 -6.49972,-14.33333 -14.33333,-14.33333zM107.5,21.5c-7.83362,0 -14.33333,6.49972 -14.33333,14.33333v28.66667c0,7.83362 6.49972,14.33333 14.33333,14.33333h28.66667c7.83362,0 14.33333,-6.49972 14.33333,-14.33333v-28.66667c0,-7.83362 -6.49972,-14.33333 -14.33333,-14.33333zM35.83333,35.83333h28.66667v28.66667h-28.66667zM107.5,35.83333h28.66667v28.66667h-28.66667zM35.83333,93.16667c-7.83362,0 -14.33333,6.49972 -14.33333,14.33333v28.66667c0,7.83362 6.49972,14.33333 14.33333,14.33333h28.66667c7.83362,0 14.33333,-6.49972 14.33333,-14.33333v-28.66667c0,-7.83362 -6.49972,-14.33333 -14.33333,-14.33333zM107.5,93.16667c-7.83362,0 -14.33333,6.49972 -14.33333,14.33333v28.66667c0,7.83362 6.49972,14.33333 14.33333,14.33333h28.66667c7.83362,0 14.33333,-6.49972 14.33333,-14.33333v-28.66667c0,-7.83362 -6.49972,-14.33333 -14.33333,-14.33333zM35.83333,107.5h28.66667v28.66667h-28.66667zM107.5,107.5h28.66667v28.66667h-28.66667z"></path></g></g></svg>
+          <span class="menu-bar__label">Сетка</span>
+        </li>
+      </menu>
+    </div>
+
+    <!-- Messages -->
+    <div id="messages" class="d-flex justify-content-center mt-3"></div>
+    <div id="django_messages" class="d-flex-justify-content-center mt-3">
+      {% for message in messages %}
+        {% if message.level_tag == 'error' %}
+          <div class="alert alert--error alert--is-visible js-alert margin-bottom-sm w-100 mb-2" role="alert" style="background: rgba(224, 36, 71, 0.2); padding: 12.5px 18.75px 12.5px 18.75px;">
+            <div class="flex items-center">
+              <svg aria-hidden="true" class="icon margin-right-xxxs" viewBox="0 0 32 32"><g><path d="M16,0C7.178,0,0,7.178,0,16s7.178,16,16,16s16-7.178,16-16S24.822,0,16,0z M17.929,7L17,19h-2L14.071,7 H17.929z M16,25c-1.105,0-2-0.895-2-2c0-1.105,0.895-2,2-2c1.105,0,2,0.895,2,2C18,24.105,17.105,25,16,25z"></path></g></svg>
+              <p><strong>Ошибка:</strong> {{ message }}</p>
+            </div>
+          </div>
+        {% elif message.level_tag == 'success' %}
+          <div class="alert alert--success alert--is-visible js-alert margin-bottom-sm w-100 mb-2" role="alert" style="background: rgba(136, 197, 89, 0.2); padding: 12.5px 18.75px 12.5px 18.75px;">
+            <div class="flex items-center">
+              <svg aria-hidden="true" class="icon margin-right-xxxs" viewBox="0 0 32 32"><g><path d="M16,0C7.178,0,0,7.178,0,16s7.178,16,16,16s16-7.178,16-16S24.822,0,16,0z M17.929,7L17,19h-2L14.071,7 H17.929z M16,25c-1.105,0-2-0.895-2-2c0-1.105,0.895-2,2-2c1.105,0,2,0.895,2,2C18,24.105,17.105,25,16,25z"></path></g></svg>
+              <p><strong>Успех:</strong> {{ message }}</p>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <!-- Cards -->
+    <div id="notes_list_wrapper">
+      <h3 id="search_result_text" class="d-none"></h3>
+
+      <div class="row mb-4" id="notes_list"></div>
+      <!-- <button type="button" class="btn btn--primary btn--md m-auto" id="load_more_notes">Показать еще</button> -->
+    </div>
+    <div id="trash_list_wrapper" class="d-none">
+      <div class="row mb-4" id="trash_list"></div>
+      <!-- <button type="button" class="btn btn--primary btn--md m-auto" id="load_more_trash">Показать еще</button> -->
+    </div>
+    <!-- Back to top -->
+  </div>
+  <div class="row container justify-content-center pt-4">
+    <div id="settings" class="pt-4 col-10@md d-none">
+      <h1 class="mb-5">Настройки</h1>
+
+      <!-- Profile settings -->
+      <form id="profile_settings" method="POST" action="{% url 'prof:profile_update' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <legend class="form-legend"><h4>Профиль</h4></legend>
+        <div class="margin-bottom-sm">
+          <div class="grid gap-sm mb-1">
+            <div class="col-6@md">
+              <label class="form-label margin-bottom-xxs" for="profile_form_username">Имя пользователя</label>
+              <input class="form-control width-100% profile-input" type="text" name="username" id="profile_form_username" required placeholder="username">
+            </div>
+            <div class="col-6@md">
+              <label class="form-label margin-bottom-xxs" for="profile_form_email">Email</label>
+              <input class="form-control width-100% profile-input" type="email" name="email" id="profile_form_email" required placeholder="email@myemail.com">
+            </div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <fieldset class="file-upload">
+              <label for="profile_form_avatar" class="file-upload__label btn btn--primary">
+                <span class="flex items-center">
+                  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2"><path  stroke-linecap="square" stroke-linejoin="miter" d="M2 16v6h20v-6"></path><path stroke-linejoin="miter" stroke-linecap="butt" d="M12 17V2"></path><path stroke-linecap="square" stroke-linejoin="miter" d="M18 8l-6-6-6 6"></path></g></svg>
+                  <span class="margin-left-xxs file-upload__text file-upload__text--has-max-width" id="avatar_upload_btn">Загрузить фото</span>
+                </span>
+              </label> 
+              <input type="file" class="file-upload__input" name="avatar" id="profile_form_avatar" multiple>
+            </fieldset>
+          </div>
+          <div id="delete_avatar_button_wrapper" class="d-flex justify-content-center p-2"></div>
+        </div>
+        <div class="settings-links mb-3">
+            <a href="{% url 'prof:change_password' %}">Сменить пароль</a><br>
+            <a href="{% url 'prof:logout' %}" id="profile_delete_link">Удалить аккаунт</a>
+          </span>
+        </div>
+        <div class="d-flex justify-content-end">
+          <button type="submit" class="btn btn--primary" id="profile_settings_submit">Сохранить</button>
+        </div>
+      </form>
+
+      <!-- Label settings -->
+      <div id="label_settings">
+        <legend class="form-legend"><h4 class="mt-5 mb-3">Ярлыки</h4></legend>
+        <div id="label_table" class="row"></div>
+      </div>
+
+      <!-- Interface settings -->
+      <form id="interface_settings" class="mb-3">
+        <legend class="form-legend mt-5 mb-3"><h4>Интерфейс</h4></legend>
+        <div class="d-flex mt-1 justify-content-center">
+          <ul class="radio-switch-v2">
+            <li class="radio-switch-v2__item">
+              <input class="radio-switch-v2__input reset" type="radio" name="theme" id="light_theme_switch">
+              <label class="radio-switch-v2__label" for="light_theme_switch">Светлая тема</label>
+            </li>
+            <li class="radio-switch-v2__item">
+              <input class="radio-switch-v2__input reset" type="radio" name="theme" id="dark_theme_switch">
+              <label class="radio-switch-v2__label" for="dark_theme_switch">Темная тема</label>
+              <div aria-hidden="true" class="radio-switch-v2__toggle"><span class="radio-switch-v2__marker"></span></div>
+            </li>
+          </ul>
+        </div>
+        <div class="d-flex mt-1 justify-content-center">
+          <ul class="radio-switch-v2">
+            <li class="radio-switch-v2__item">
+              <input class="radio-switch-v2__input reset" type="radio" name="language" id="russian_language_switch">
+              <label class="radio-switch-v2__label" for="russian_language_switch">Русский</label>
+            </li>
+            <li class="radio-switch-v2__item">
+              <input class="radio-switch-v2__input reset" type="radio" name="language" id="english_language_switch">
+              <label class="radio-switch-v2__label" for="english_language_switch">English</label>
+              <div aria-hidden="true" class="radio-switch-v2__toggle"><span class="radio-switch-v2__marker"></span></div>
+            </li>
+          </ul>
+        </div>
+        <div class="d-flex justify-content-end">
+          <button type="submit" class="btn btn--primary" id="interface_settings_submit">Сохранить</button>
+        </div>
+        <div class="d-flex justify-content-end mt-5">
+          <button type="button" data-href="{% url 'prof:logout' %}" id="logout_button" class="btn btn--accent">Выйти</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <a class="back-to-top js-back-to-top" href="#" data-offset="100" data-duration="300">
+    <svg class="icon" viewBox="0 0 16 16"><title>Наверх</title><g stroke-width="1" stroke="currentColor"><polyline fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="15.5,11.5 8,4 0.5,11.5 "></polyline></g></svg>
+  </a>
+
+
+  <!-- New note form -->
+  <div class="modal modal--animate-scale flex flex-center bg-contrast-higher bg-opacity-90% padding-md js-modal" id="new_note_modal">
+    <div class="modal__content width-100% max-width-xs bg radius-md shadow-md" role="alertdialog" tabindex="-1" aria-labelledby="new_note_modal_title" aria-describedby="new_note_modal_description">
+      <header class="bg-contrast-lower padding-y-sm padding-x-md flex items-center justify-between">
+        <h4 class="text-truncate" id="new_note_modal_title">Новая запись</h4>
+        <button class="reset modal__close-btn modal__close-btn--inner hide@md js-modal__close js-tab-focus">
+          <svg class="icon" viewBox="0 0 20 20">
+            <title>Закрыть окно</title>
+            <g fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2">
+              <line x1="3" y1="3" x2="17" y2="17" />
+              <line x1="17" y1="3" x2="3" y2="17" />
+            </g>
+          </svg>
+        </button>
+      </header>
+      <form id="new_note_form">
+        <div class="padding-y-sm padding-x-md">
+          <div class="text-component">
+            <p id="new_note_modal_description">
+              <input class="form-control width-100% mb-1" type="text" name="title" id="new_note_title" required placeholder="Заголовок">
+              <textarea name="content" id="new_note_content" class="form-control width-100%" placeholder="Запись..." rows="10"></textarea>
+              <div id="new_note_form_labels"></div>
+            </p>
+          </div>
+        </div>
+        <footer class="padding-x-md padding-y-sm">
+          <div class="flex justify-end gap-xs">
+            <button class="btn btn--subtle js-modal__close btn--sm" id="new_note_modal_close">Закрыть</button>
+            <button type="submit" class="btn btn--primary btn--sm" id="new_note_form_submit">Сохранить</button> 
+          </div>
+        </footer>
+      </form>
+    </div>
+    <button class="reset modal__close-btn modal__close-btn--outer display@md js-modal__close js-tab-focus">
+      <svg class="icon icon--sm" viewBox="0 0 24 24">
+        <title>Закрыть окно</title>
+        <g fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2">
+          <line x1="3" y1="3" x2="21" y2="21" />
+          <line x1="21" y1="3" x2="3" y2="21" />
+        </g>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Edit note form -->
+  <div class="modal modal--animate-scale flex flex-center bg-contrast-higher bg-opacity-90% padding-md js-modal" id="edit_note_modal">
+    <div class="modal__content width-100% max-width-xs bg radius-md shadow-md" role="alertdialog" tabindex="-1" aria-labelledby="edit_note_modal_title" aria-describedby="edit_note_modal_description">
+      <header class="bg-contrast-lower padding-y-sm padding-x-md flex items-center justify-between">
+        <h4 class="text-truncate" id="edit_note_modal_title">Изменить запись</h4>
+        <button class="reset modal__close-btn modal__close-btn--inner hide@md js-modal__close js-tab-focus">
+          <svg class="icon" viewBox="0 0 20 20">
+            <title>Закрыть окно</title>
+            <g fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2">
+              <line x1="3" y1="3" x2="17" y2="17" />
+              <line x1="17" y1="3" x2="3" y2="17" />
+            </g>
+          </svg>
+        </button>
+      </header>
+      <form id="edit_note_form">
+        <div class="padding-y-sm padding-x-md">
+          <div class="text-component">
+            <p id="edit_note_modal_description">
+              <span class="text-muted note_form_date mb-2" id="edit_note_date"></span>
+              <input type="hidden" name="pk" id="edit_note_pk">
+              <input class="form-control width-100% mb-1" type="text" name="title" id="edit_note_title" required placeholder="Заголовок">
+              <textarea name="content" id="edit_note_content" class="form-control width-100%" placeholder="Запись..." rows="10"></textarea>
+              <div id="edit_note_form_labels"></div>
+            </p>
+          </div>
+        </div>
+        <footer class="padding-x-md padding-y-sm">
+          <div class="flex justify-end gap-xs">
+            <button class="btn btn--accent js-modal__close btn--sm" id="edit_note_delete">Удалить</button>
+            <button class="btn btn--subtle js-modal__close btn--sm" id="edit_note_modal_close">Закрыть</button>
+            <button type="submit" class="btn btn--primary btn--sm" id="edit_note_form_submit">Сохранить</button> 
+          </div>
+        </footer>
+      </form>
+    </div>
+    <button class="reset modal__close-btn modal__close-btn--outer display@md js-modal__close js-tab-focus">
+      <svg class="icon icon--sm" viewBox="0 0 24 24">
+        <title>Закрыть окно</title>
+        <g fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2">
+          <line x1="3" y1="3" x2="21" y2="21" />
+          <line x1="21" y1="3" x2="3" y2="21" />
+        </g>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Recovery note form -->
+  <div class="modal modal--animate-scale flex flex-center bg-contrast-higher bg-opacity-90% padding-md js-modal" id="recovery_note_modal">
+    <div class="modal__content width-100% max-width-xs bg radius-md shadow-md" role="alertdialog" tabindex="-1" aria-labelledby="recovery_note_modal_title" aria-describedby="recovery_note_modal_description">
+      <header class="bg-contrast-lower padding-y-sm padding-x-md flex items-center justify-between">
+        <h4 class="text-truncate" id="recovery_note_modal_title">Восстановить запись</h4>
+        <button class="reset modal__close-btn modal__close-btn--inner hide@md js-modal__close js-tab-focus">
+          <svg class="icon" viewBox="0 0 20 20">
+            <title>Закрыть окно</title>
+            <g fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2">
+              <line x1="3" y1="3" x2="17" y2="17" />
+              <line x1="17" y1="3" x2="3" y2="17" />
+            </g>
+          </svg>
+        </button>
+      </header>
+      <div class="padding-y-sm padding-x-md" id="recovery_note_form">
+        <div class="text-component">
+          <p id="recovery_note_modal_description">
+            <span class="text-muted note_form_date mb-2" id="recovery_note_date"></span>
+            <input type="hidden" name="pk" id="recovery_note_pk">
+            <input class="form-control width-100% mb-1" type="text" name="title" id="recovery_note_title" required placeholder="Заголовок" disabled="">
+            <textarea name="content" id="recovery_note_content" class="form-control width-100%" placeholder="Запись..." rows="10" disabled=""></textarea>
+            <div id="recovery_note_form_labels"></div>
+          </p>
+        </div>
+      </div>
+      <footer class="padding-x-md padding-y-sm">
+        <div class="flex justify-end gap-xs">
+          <button class="btn btn--accent js-modal__close btn--sm" id="recovery_note_delete">Удалить</button>
+          <button class="btn btn--subtle js-modal__close btn--sm" id="recovery_note_modal_close">Закрыть</button>
+          <button class="btn btn--info btn--sm js-modal__close" id="recovery_note_recovery">Восстановить</button> 
+        </div>
+      </footer>
+    </div>
+    <button class="reset modal__close-btn modal__close-btn--outer display@md js-modal__close js-tab-focus">
+      <svg class="icon icon--sm" viewBox="0 0 24 24">
+        <title>Закрыть окно</title>
+        <g fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2">
+          <line x1="3" y1="3" x2="21" y2="21" />
+          <line x1="21" y1="3" x2="3" y2="21" />
+        </g>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Avatar delete modal -->
+  <div class="modal modal--animate-scale flex flex-center bg-contrast-higher bg-opacity-90% padding-md js-modal" id="delete_avatar_modal">
+    <div class="modal__content width-100% max-width-xs bg radius-md shadow-md" role="alertdialog" tabindex="-1" aria-labelledby="delete_avatar_modal_title" aria-describedby="delete_avatar_modal_description">
+      <header class="bg-contrast-lower padding-y-sm padding-x-md flex items-center justify-between">
+        <h4 class="text-truncate" id="delete_avatar_modal_title">Удалить фото?</h4>
+        <button class="reset modal__close-btn modal__close-btn--inner hide@md js-modal__close js-tab-focus">
+          <svg class="icon" viewBox="0 0 20 20">
+            <title>Закрыть окно</title>
+            <g fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2">
+              <line x1="3" y1="3" x2="17" y2="17" />
+              <line x1="17" y1="3" x2="3" y2="17" />
+            </g>
+          </svg>
+        </button>
+      </header>
+      <div class="padding-y-sm padding-x-md">
+        <div class="text-component">
+          <p id="delete_avatar_modal_description">Фото вашего профиля будет удален.</p>
+        </div>
+      </div>
+      <footer class="padding-md">
+        <div class="flex justify-end gap-xs">
+          <button class="btn btn--subtle js-modal__close">Отмена</button>
+          <button data-href="{% url 'prof:profile_update' %}" class="btn btn--accent" id="delete_avatar_modal_button">Удалить</button>
+        </div>
+      </footer>
+    </div>
+    <button class="reset modal__close-btn modal__close-btn--outer display@md js-modal__close js-tab-focus">
+      <svg class="icon icon--sm" viewBox="0 0 24 24">
+        <title>Закрыть окно</title>
+        <g fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2">
+          <line x1="3" y1="3" x2="21" y2="21" />
+          <line x1="21" y1="3" x2="3" y2="21" />
+        </g>
+      </svg>
+    </button>
+  </div>
+
+  <!-- New label form -->
+  <div class="modal modal--animate-scale flex flex-center bg-contrast-higher bg-opacity-90% padding-md js-modal" id="new_label_modal">
+    <div class="modal__content width-100% max-width-xs padding-md bg radius-md shadow-md" role="alertdialog" tabindex="-1" aria-labelledby="new_label_modal_title">
+      <div class="text-component margin-bottom-md">
+        <h3 id="new_label_modal_title">Новый ярлык</h3>
+      </div>
+      <form class="margin-bottom-sm" id="new_label_form">
+        <div class="flex flex-row flex-row@xs gap-xxxs">
+          <input aria-label="Название" class="form-control flex-grow label_input" type="type" placeholder="Название" id="new_label_input">
+          <button class="btn btn--primary" type="submit" id="new_label_form_submit">Сохранить</button>
+        </div>
+      </form>
+    </div>
+    <button class="reset modal__close-btn modal__close-btn--outer  js-modal__close js-tab-focus" id="new_label_modal_close">
+      <svg class="icon icon--sm" viewBox="0 0 24 24">
+        <title>Закрыть окно</title>
+        <g fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2">
+          <line x1="3" y1="3" x2="21" y2="21" />
+          <line x1="21" y1="3" x2="3" y2="21" />
+        </g>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Edit label form -->
+  <div class="modal modal--animate-scale flex flex-center bg-contrast-higher bg-opacity-90% padding-md js-modal" id="edit_label_modal">
+    <div class="modal__content width-100% max-width-xs padding-md bg radius-md shadow-md" role="alertdialog" tabindex="-1" aria-labelledby="edit_label_modal_title">
+      <div class="text-component margin-bottom-md">
+        <h3 id="edit_label_modal_title">Изменить ярлык</h3>
+      </div>
+      <form class="margin-bottom-sm" id="edit_label_form">
+        <div class="flex flex-row flex-row@xs gap-xxxs">
+          <input aria-label="Название" class="form-control flex-grow label_input" type="text" placeholder="Название" id="edit_label_input">
+          <button class="btn btn--primary">Сохранить</button>
+        </div>
+      </form>
+    </div>
+    <button class="reset modal__close-btn modal__close-btn--outer  js-modal__close js-tab-focus" id="edit_label_modal_close">
+      <svg class="icon icon--sm" viewBox="0 0 24 24">
+        <title>Закрыть окно</title>
+        <g fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2">
+          <line x1="3" y1="3" x2="21" y2="21" />
+          <line x1="21" y1="3" x2="3" y2="21" />
+        </g>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Delete label modal -->
+  <div class="modal modal--animate-scale flex flex-center bg-contrast-higher bg-opacity-90% padding-md js-modal" id="label_delete_confirm">
+    <div class="modal__content width-100% max-width-xs bg radius-md shadow-md" role="alertdialog" tabindex="-1" aria-describedby="label_delete_confirm_title">
+      <header class="bg-contrast-lower padding-y-sm padding-x-md flex items-center justify-between">
+        <button class="reset modal__close-btn modal__close-btn--inner hide@md js-modal__close js-tab-focus">
+          <svg class="icon" viewBox="0 0 20 20">
+            <title>Закрыть окно</title>
+            <g fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2">
+              <line x1="3" y1="3" x2="17" y2="17" />
+              <line x1="17" y1="3" x2="3" y2="17" />
+            </g>
+          </svg>
+        </button>
+      </header>
+      <div class="padding-y-sm padding-x-md">
+        <div class="text-component">
+          <input type="hidden" id="label_delete_url">
+          <p id="label_delete_confirm_title"></p>
+        </div>
+      </div>
+      <footer class="padding-md">
+        <div class="flex justify-end gap-xs">
+          <button class="btn btn--subtle js-modal__close" id="label_delete_confirm_close">Закрыть</button>
+          <button class="btn btn--accent js-modal__close" id="label_delete_confirm_submit">Удалить</button>
+        </div>
+      </footer>
+    </div>
+    <button class="reset modal__close-btn modal__close-btn--outer display@md js-modal__close js-tab-focus">
+      <svg class="icon icon--sm" viewBox="0 0 24 24">
+        <title>Закрыть окно</title>
+        <g fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2">
+          <line x1="3" y1="3" x2="21" y2="21" />
+          <line x1="21" y1="3" x2="3" y2="21" />
+        </g>
+      </svg>
+    </button>
+  </div>
+
+  <!--Delete notes modal -->
+  <div class="modal modal--animate-scale flex flex-center bg-contrast-higher bg-opacity-90% padding-md js-modal" id="delete_notes_modal">
+    <div class="modal__content width-100% max-width-xs bg radius-md shadow-md" role="alertdialog" tabindex="-1" aria-labelledby="delete_notes_modal_title" aria-describedby="delete_notes_modal_description">
+      <header class="bg-contrast-lower padding-y-sm padding-x-md flex items-center justify-between">
+        <h4 class="text-truncate" id="delete_notes_modal_title"></h4>
+        <button class="reset modal__close-btn modal__close-btn--inner hide@md js-modal__close js-tab-focus">
+          <svg class="icon" viewBox="0 0 20 20">
+            <title>Закрыть окно</title>
+            <g fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2">
+              <line x1="3" y1="3" x2="17" y2="17" />
+              <line x1="17" y1="3" x2="3" y2="17" />
+            </g>
+          </svg>
+        </button>
+      </header>
+      <div class="padding-y-sm padding-x-md">
+        <div class="text-component">
+          <p id="delete_notes_modal_description"></p>
+        </div>
+      </div>
+      <footer class="padding-md">
+        <div class="flex justify-end gap-xs">
+          <button class="btn btn--subtle js-modal__close" id="delete_notes_modal_close">Отмена</button>
+          <button class="btn btn--accent" id="delete_notes_modal_button">Удалить</button>
+        </div>
+      </footer>
+    </div>
+    <button class="reset modal__close-btn modal__close-btn--outer display@md js-modal__close js-tab-focus">
+      <svg class="icon icon--sm" viewBox="0 0 24 24">
+        <title>Закрыть окно</title>
+        <g fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2">
+          <line x1="3" y1="3" x2="21" y2="21" />
+          <line x1="21" y1="3" x2="3" y2="21" />
+        </g>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Recovery notes modal -->
+  <div class="modal modal--animate-scale flex flex-center bg-contrast-higher bg-opacity-90% padding-md js-modal" id="recovery_notes_modal">
+    <div class="modal__content width-100% max-width-xs bg radius-md shadow-md" role="alertdialog" tabindex="-1" aria-labelledby="recovery_notes_modal_title" aria-describedby="recovery_notes_modal_description">
+      <header class="bg-contrast-lower padding-y-sm padding-x-md flex items-center justify-between">
+        <h4 class="text-truncate" id="recovery_notes_modal_title"></h4>
+        <button class="reset modal__close-btn modal__close-btn--inner hide@md js-modal__close js-tab-focus">
+          <svg class="icon" viewBox="0 0 20 20">
+            <title>Закрыть окно</title>
+            <g fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2">
+              <line x1="3" y1="3" x2="17" y2="17" />
+              <line x1="17" y1="3" x2="3" y2="17" />
+            </g>
+          </svg>
+        </button>
+      </header>
+      <div class="padding-y-sm padding-x-md">
+        <div class="text-component">
+          <p id="recovery_notes_modal_description"></p>
+        </div>
+      </div>
+      <footer class="padding-md">
+        <div class="flex justify-end gap-xs">
+          <button class="btn btn--subtle js-modal__close" id="recovery_notes_modal_close">Отмена</button>
+          <button class="btn btn--info" id="recovery_notes_modal_button">Восстановить</button>
+        </div>
+      </footer>
+    </div>
+    <button class="reset modal__close-btn modal__close-btn--outer display@md js-modal__close js-tab-focus">
+      <svg class="icon icon--sm" viewBox="0 0 24 24">
+        <title>Закрыть окно</title>
+        <g fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2">
+          <line x1="3" y1="3" x2="21" y2="21" />
+          <line x1="21" y1="3" x2="3" y2="21" />
+        </g>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Profile delete form -->
+  <div class="modal modal--animate-scale flex flex-center bg-contrast-higher bg-opacity-90% padding-md js-modal" id="profile_delete_modal">
+    <div class="modal__content width-100% max-width-xs padding-md bg radius-md shadow-md" role="alertdialog" aria-labelledby="profile_delete_modal_title" aria-describedby="profile_delete_modal_description">
+      <div class="text-component margin-bottom-md">
+        <h3 id="profile_delete_modal_title">Удалить аккаунт</h3>
+        <p id="profile_delete_modal_description">Ваш аккаунт будет удален.</p>
+      </div>
+      <form class="margin-bottom-sm" id="profile_delete_form">
+        <div class="flex flex-row flex-row@xs gap-xxxs">
+          <input aria-label="Пароль" class="form-control flex-grow label_input" type="password" placeholder="Пароль" id="profile_delete_form_password">
+          <button class="btn btn--accent" id="profile_delete_form_submit" type="submit">Удалить</button>
+        </div>
+      </form>
+    </div>
+    <button class="reset modal__close-btn modal__close-btn--outer  js-modal__close js-tab-focus" id="profile_delete_modal_close">
+      <svg class="icon icon--sm" viewBox="0 0 24 24">
+        <title>Закрыть окно</title>
+        <g fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2">
+          <line x1="3" y1="3" x2="21" y2="21" />
+          <line x1="21" y1="3" x2="3" y2="21" />
+        </g>
+      </svg>
+    </button>
+  </div>
+  <script src="{% static 'js/notes.js' %}"></script>
+  <script src="{% static 'js/codyhouse/scripts.min.js' %}"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  <script>
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip();
+    })
+  </script>
+</body>
+</html>
